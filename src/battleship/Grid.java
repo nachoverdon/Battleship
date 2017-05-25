@@ -15,22 +15,12 @@ import java.util.ArrayList;
  * Representa el tablero donde tendrá lugar la partida. Se encarga de manejar
  * todo los relacionado con el tablero y sus 'piezas'.
  *
- * Propiedades:
- * - grid es una lista con los caracteres que representan las celdas del
- * tablero.
- *
- * - attackedGrid es una lista con booleans que indican si una casilla ha sido
- * atacada o no.
- *
+ * - grid es una lista con las celdas a representar en el tablero.
  * - playerShips es una lista con diferentes barcos. Éstos contienen su
  * localización dentro del tablero.
- *
  * - cpuShips, como playerShips pero los barcos del ordenador.
- *
  * - HEIGHT es la altura del tablero.
- *
  * - WIDTH es la anchura del tablero.
- *
  * - CHAR_WATER representa una casilla vacía.
  * - CHAR_WATER_ATTACKED representa una casilla vacía atacada.
  * - CHAR_SHIP representa una casilla de barco.
@@ -44,10 +34,10 @@ public class Grid {
     private ArrayList<Ship> cpuShips;
     private final int HEIGHT = 10;
     private final int WIDTH = 10;
-    private final String CHAR_WATER = "≈";
-    private final String CHAR_WATER_ATTACKED = "X";
-    private final String CHAR_SHIP = "◊";
-    private final String CHAR_SHIP_ATTACKED = "♦";
+    private static final String CHAR_WATER = "≈";
+    private static final String CHAR_WATER_ATTACKED = "X";
+    private static final String CHAR_SHIP = "◊";
+    private static final String CHAR_SHIP_ATTACKED = "♦";
 
     public Grid() {
         this.grid = new ArrayList<>();
@@ -60,10 +50,15 @@ public class Grid {
         
     }
 
+    // TEST: Método para comprobar salidas de rango
+    public String getByIndexTest(int idx) {
+        return grid.get(idx).getCharacter();
+    }
+
     // Rellena el tablero con 'nada' para su presentación visual.
     private void fillGrid() {
         for (int y = 0; y < (this.HEIGHT * this.WIDTH); y++) {
-            Cell waterCell = new Cell(this.CHAR_WATER, this.CHAR_WATER_ATTACKED);
+            Cell waterCell = new Cell(Grid.CHAR_WATER, Grid.CHAR_WATER_ATTACKED);
             grid.add(waterCell);
         }
     }
@@ -91,7 +86,7 @@ public class Grid {
                 } else {
                     
                 }
-                System.out.print("[" + cell + "]  ");
+                System.out.print("[" + cell.getCharacter() + "]  ");
             }
             System.out.println();
         }
