@@ -17,9 +17,10 @@ package battleship;
 public class Cell {
     private final String character;
     private final String attackedCharacter;
-    private final boolean attacked = false;
+    private boolean attacked;
 
     public Cell(String character, String attackedCharacter) {
+        this.attacked = false;
         this.character = character;
         this.attackedCharacter = attackedCharacter;
     }
@@ -35,6 +36,11 @@ public class Cell {
     // Indica si la casilla ha sido atacada o no.
     public boolean isAttacked() {
         return this.attacked;
+    }
+
+    // Marca la casilla como atacada.
+    public void attack() {
+        this.attacked = true;
     }
 
 }

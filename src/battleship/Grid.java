@@ -6,6 +6,7 @@
 
 package battleship;
 
+import battleship.Exceptions.*;
 import java.util.ArrayList;
 
 /**
@@ -90,6 +91,15 @@ public class Grid {
             }
             System.out.println();
         }
+    }
+
+    // Marca como atacada la casilla de la posición dada.
+    public final String attackCell(int index) throws Exception {
+        // Si ya ha sido atacada, lanza una excepción
+        if (this.grid.get(index).isAttacked()) {
+            throw new AlreadyAttackedException();
+        }
+        return "";
     }
 
 
