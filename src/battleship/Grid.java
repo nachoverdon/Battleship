@@ -8,6 +8,10 @@ package battleship;
 
 import battleship.Exceptions.*;
 import java.util.ArrayList;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 
 /**
  *
@@ -16,28 +20,28 @@ import java.util.ArrayList;
  * Representa el tablero donde tendrá lugar la partida. Se encarga de manejar
  * todo los relacionado con el tablero y sus 'piezas'.
  *
- * - grid es una lista con las celdas a representar en el tablero.
- * - playerShips es una lista con diferentes barcos. Éstos contienen su
- * localización dentro del tablero.
- * - cpuShips, como playerShips pero los barcos del ordenador.
- * - HEIGHT es la altura del tablero.
- * - WIDTH es la anchura del tablero.
- * - CHAR_WATER representa una casilla vacía.
- * - CHAR_WATER_ATTACKED representa una casilla vacía atacada.
- * - CHAR_SHIP representa una casilla de barco.
- * - CHAR_SHIP_ATTACKED representa una casilla de barco atacada.
  */
 
 
 public class Grid {
+    // Lista con las celdas a representar en el tablero.
     private final ArrayList<Cell> grid;
+    // Lista con diferentes barcos. Éstos contienen su localización dentro del
+    // tablero.
     private ArrayList<Ship> playerShips;
+    // Como playerShips pero los barcos del tablero del oponente CPU.
     private ArrayList<Ship> cpuShips;
+    // La altura del tablero.
     private final int HEIGHT = 10;
+    // La anchura del tablero.
     private final int WIDTH = 10;
+    // Representa una casilla vacía.
     private static final String CHAR_WATER = "≈";
+    // Representa una casilla vacía atacada.
     private static final String CHAR_WATER_ATTACKED = "X";
+    // Representa una casilla de barco.
     private static final String CHAR_SHIP = "◊";
+    // Representa una casilla de barco atacada.
     private static final String CHAR_SHIP_ATTACKED = "♦";
 
     public Grid() {
@@ -74,26 +78,30 @@ public class Grid {
         }
     }
 
-    // Muestra el contenido del tablero en forma de cuadrado.
-    public final void showGrid() {
+    /**
+     * @return El contenido del tablero separado por lineas del tamaño del
+     * WIDTH.
+     */
+    public final String showGrid() {
+        String gridText = "";
         for (int y = 0; y < this.HEIGHT; y++) {
             for (int x = 0; x < this.WIDTH; x++) {
                 int cellNumber = y * this.WIDTH + x;
-                Cell cell = grid.get(cellNumber);
-
-                // Si la casilla ha sido descubierta
-                if (cell.isAttacked()) {
-                    
-                } else {
-                    
-                }
-                System.out.print("[" + cell.getCharacter() + "]  ");
+                Cell cell = this.grid.get(cellNumber);
+                gridText += "[" + cell.getCharacter() + "]  ";
             }
-            System.out.println();
+            gridText += "\n";
         }
+        return gridText;
     }
 
-    // Marca como atacada la casilla de la posición dada.
+    /**
+     * Marca como atacada la casilla de la posición dada.
+     *
+     * @param index Índice de la casilla en el grid.
+     * @return El caracter de la casilla que ha atacado.
+     * @throws Exception Si la casilla ya ha sido atacada previamente.
+     */
     public final String attackCell(int index) throws Exception {
         // Si ya ha sido atacada, lanza una excepción
         if (this.grid.get(index).isAttacked()) {

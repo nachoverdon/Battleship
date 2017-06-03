@@ -10,8 +10,13 @@ import java.util.Scanner;
 /**
  *
  * @author Nacho Verdón
+ *
+ * El clásico juego de mesa 'Hundir la flota'.
+ *
+ * Esta clase se encarga de manejar la interacción con el jugador.
  */
 public final class Battleship {
+    // Objeto para manejar la entrada de datos.
     private static final Scanner SC = new Scanner(System.in);;
 
     /**
@@ -22,6 +27,12 @@ public final class Battleship {
         askForInput(grid);
     }
 
+    /**
+     * Espera la entrada de datos del usuario y realiza acciones según los datos
+     * introducidos.
+     *
+     * @param grid Tablero sobre el cual se desarrollará la acción.
+     */
     public static void askForInput(Grid grid) {
         System.out.println("Gimme int: ");
         try {
