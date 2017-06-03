@@ -8,11 +8,9 @@ package battleship;
 /**
  *
  * @author Nacho Verdón
- * Estas celdas representaran el agua (casilla sin barco).
+ *
+ * Interface simple bastante inútil para demostrar su uso.
  */
-public class WaterCell extends Cell implements WaterCharacters {
-
-    public WaterCell() {
-        super(CHAR_WATER, CHAR_WATER_ATTACKED);
-    }
+public interface Id {
+    int getId();
 }

@@ -15,17 +15,25 @@ import java.io.IOException;
  */
 public class Tests {
     public static void main(String[] args) {
+        System.out.println("lol".substring(1, 2));
+        System.out.println(Integer.parseInt("\n".trim()));
+        ShipFileReader sfr = new ShipFileReader();
+        try {
+            System.out.println(sfr.stringify());
+        } catch (Exception err) {
+            System.out.print("Tests.java - line 20 ");
+            System.out.println(err.getMessage());
+        }
+        
         File file = new File("src/ships.grid");
         try {
+            System.out.println("");
             FileReader fr = new FileReader(file);
             int chr = fr.read();
             String str = "";
             while (chr != -1) {
-                str += "[";
                 str += chrToStr(chr);
-                str += "]";
                 chr = fr.read();
-                System.out.print(str);
             }
             System.out.println(str);
         } catch (IOException err) {

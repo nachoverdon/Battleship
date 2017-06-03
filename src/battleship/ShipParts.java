@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * Contiene las localizaciones de las celdas en las que se encuentran las partes
  * de un barco según la id.
  */
-public class ShipParts {
+public class ShipParts implements Id {
     // Indica al barco al que pertenece.
     private final int id;
     // Lista con las posiciones de las partes.
@@ -25,6 +25,7 @@ public class ShipParts {
      */
     public ShipParts(int id) {
         this.id = id;
+        this.positions = new ArrayList<>();
     }
 
     /**
@@ -45,6 +46,7 @@ public class ShipParts {
     /**
      * @return Identificador del barco.
      */
+    @Override
     public int getId() {
         return this.id;
     }

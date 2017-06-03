@@ -12,6 +12,6 @@ package battleship.Exceptions;
 public class WrongShipFileException extends Exception {
     public WrongShipFileException() {
         super("Error en el fichero de barcos. Por favor, lee la documentación"
-                + "\npara saber como rellenar correctamente dicho fichero.");
+              + " para saber como rellenar correctamente dicho fichero.");
     }
 }

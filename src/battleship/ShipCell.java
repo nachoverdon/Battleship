@@ -13,14 +13,11 @@ package battleship;
  * Estas celdas representaran las partes de los barcos. Tienen además una id que
  * las relaciona con las demás partes del mismo barco.
  */
-public class ShipCell extends Cell {
+public class ShipCell extends Cell implements Id, ShipCharacters {
     // Indica al barco al que pertenece.Varias celda tienen el mismo id para
     // relacionarlas entre si.
     private final int id;
-    // Representa una casilla de barco.
-    private static final String CHAR_SHIP = "◊";
-    // Representa una casilla de barco atacada.
-    private static final String CHAR_SHIP_ATTACKED = "♦";
+
 
     /**
      * @param id Identificador de las partes del barco. Todas las partes de un
@@ -34,6 +31,7 @@ public class ShipCell extends Cell {
     /**
      * @return El id del barco.
      */
+    @Override
     public int getId() {
         return this.id;
     }

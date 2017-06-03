@@ -8,11 +8,10 @@ package battleship;
 /**
  *
  * @author Nacho Verdón
- * Estas celdas representaran el agua (casilla sin barco).
  */
-public class WaterCell extends Cell implements WaterCharacters {
-
-    public WaterCell() {
-        super(CHAR_WATER, CHAR_WATER_ATTACKED);
-    }
+public interface WaterCharacters {
+    // Representa una casilla vacía.
+    static final String CHAR_WATER = "≈";
+    // Representa una casilla vacía atacada.
+    static final String CHAR_WATER_ATTACKED = "X";
 }

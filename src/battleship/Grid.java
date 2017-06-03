@@ -9,8 +9,6 @@ package battleship;
 import battleship.Exceptions.*;
 import java.util.ArrayList;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 
 /**
@@ -23,7 +21,9 @@ import java.io.IOException;
  */
 
 
-public class Grid {
+public class Grid implements WaterCharacters {
+    // Habilita las opciones de dugging y testeos si es true
+    private final boolean DEBUG = false;
     // Ruta del archivo con la posición de los barcos del jugador
     private final String PATH = "src/ships.grid";
     // Lista con las celdas a representar en el tablero.
@@ -48,8 +48,9 @@ public class Grid {
 
     public Grid() throws Exception {
         this.grid = new ArrayList<>();
+        this.playerShips = new ArrayList<>();
+        this.cpuShips = new ArrayList<>();
         this.fillGrid();
-        this.showGrid();
 
     }
 
@@ -57,27 +58,19 @@ public class Grid {
         
     }
 
-    // TEST: Método para comprobar salidas de rango
-    public String getByIndexTest(int idx) {
-        return this.grid.get(idx).getCharacter();
-    }
-
-    // Rellena el tablero con CHAR_WATER para su presentación visual.
+    // Rellena el tablero con agua para su presentación visual.
     private void fillGridWithNothing() {
         for (int index = 0; index < (this.HEIGHT * this.WIDTH); index++) {
             this.grid.add(new WaterCell());
         }
     }
 
-    // Convierte un entero a un string según el código ascii
-    private String toStr(int code) {
-        return Character.toString((char) code);
-    }
-
     // Comprueba si un caracter es barco o no según el formato de barcos
     // 0 es agua. > 0 es barco. > 6 Error.
     private boolean isShip(String string) throws WrongShipFileException {
         int num;
+        string = string.trim();
+        if (string.isEmpty()) return false;
         try {
             num = Integer.parseInt(string);
             if (num >= 6) {
@@ -91,6 +84,8 @@ public class Grid {
         }
     }
 
+    // Comprueba si existe ya un grupo de barcos en la lista de partes con la id
+    // dada.
     private boolean hasId(ArrayList<ShipParts> list, int id) {
         for (ShipParts sp: list) {
             if (sp.getId() == id) return true;
@@ -98,6 +93,7 @@ public class Grid {
         return false;
     }
 
+    // Localiza el índice del grupo de barcos por la id dada
     private int getShipPartsIndex(ArrayList<ShipParts> list, int id) {
         int length = list.size();
         for (int i = 0; i < length; i++) {
@@ -109,11 +105,11 @@ public class Grid {
 
     // TODO:
     private void fillGrid() throws Exception {
-        File file = new File(this.PATH);
         try {
-            FileReader fr = new FileReader(file);
+            String shipFile = new ShipFileReader().stringify();
+
             for (int index = 0; index < (this.HEIGHT * this.WIDTH); index++) {
-                String cell = toStr(fr.read());
+                String cell = shipFile.substring(index, index + 1);
                 // Si es un barco
                 if (isShip(cell)) {
                     // Obtiene la id y crea una celda de barco con dicha iden la
@@ -125,13 +121,13 @@ public class Grid {
                     // barcos.
                     ShipParts shipParts;
 
-                    // Si no existe un grupo de barcos con el mismo id, lo crea.
-                    if (!hasId(this.playerShips, shipId)) {
-                        shipParts = new ShipParts(shipId);
-                    // Si existe, simplemente selecciona el ya existente
-                    } else {
+                     // Si existe un grupo de barcos selecciona el ya existente.
+                    if (hasId(this.playerShips, shipId)) {
                         int idx = getShipPartsIndex(this.playerShips, shipId);
                         shipParts = this.playerShips.get(idx);
+                    // Si no existe con el mismo id, lo crea.
+                    } else {
+                        shipParts = new ShipParts(shipId);
                     }
                     // Y le añade la parte
                     shipParts.add(index);
@@ -145,17 +141,6 @@ public class Grid {
         }
     }
 
-    // DEBUG
-    // Muestra el contenido real del tablero en forma de cuadrado.
-    private void showRealGrid() {
-        for (int y = 0; y < this.HEIGHT; y++) {
-            for (int x = 0; x < this.WIDTH; x++) {
-                System.out.print(grid.get(y * this.WIDTH + x) + " ");
-            }
-            System.out.println();
-        }
-    }
-
     /**
      * @return El contenido del tablero separado por lineas del tamaño del
      * WIDTH.
@@ -166,7 +151,13 @@ public class Grid {
             for (int x = 0; x < this.WIDTH; x++) {
                 int cellNumber = y * this.WIDTH + x;
                 Cell cell = this.grid.get(cellNumber);
-                gridText += "[" + cell.getCharacter() + "]  ";
+                if (DEBUG) {
+                    gridText += "[" + cell.getCharacter() + "] ";
+                } else if (cell instanceof ShipCell && !cell.isAttacked()) {
+                    gridText += "[" + CHAR_WATER + "] ";
+                } else {
+                    gridText += "[" + cell.getCharacter() + "] ";
+                }
             }
             gridText += "\n";
         }

@@ -26,6 +26,7 @@ public final class Battleship {
     public static void main(String[] args) {
         try {
             Grid grid = new Grid();
+            System.out.println(grid.showGrid());
             askForInput(grid);
         } catch (Exception err) {
             System.out.println(err.getMessage());
@@ -42,7 +43,6 @@ public final class Battleship {
         System.out.println("Gimme int: ");
         try {
             int num = SC.nextInt();
-            System.out.println(grid.getByIndexTest(num));
         } catch (IndexOutOfBoundsException e) {
             System.out.println("Te pasaste, muyayo. But...");
         } catch (Exception e) {
