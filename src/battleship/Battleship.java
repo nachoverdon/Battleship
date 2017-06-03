@@ -6,6 +6,7 @@
 package battleship;
 
 import java.util.Scanner;
+import battleship.Exceptions.*;
 
 /**
  *
@@ -23,8 +24,12 @@ public final class Battleship {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Grid grid = new Grid();
-        askForInput(grid);
+        try {
+            Grid grid = new Grid();
+            askForInput(grid);
+        } catch (Exception err) {
+            System.out.println(err.getMessage());
+        }
     }
 
     /**

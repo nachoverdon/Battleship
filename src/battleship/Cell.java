@@ -13,7 +13,7 @@ package battleship;
  * El tablero se compondrá de estas celdas, las cuales utilizan un caracter para
  * ser representadas y pueden estar o no atacadas.
  */
-public class Cell {
+abstract public class Cell {
     // Representará la celda en el tablero.
     private final String character;
     // Representará la celda atacada en el tablero.

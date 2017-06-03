@@ -24,27 +24,29 @@ import java.io.IOException;
 
 
 public class Grid {
+    // Ruta del archivo con la posición de los barcos del jugador
+    private final String PATH = "src/ships.grid";
     // Lista con las celdas a representar en el tablero.
     private final ArrayList<Cell> grid;
     // Lista con diferentes barcos. Éstos contienen su localización dentro del
     // tablero.
-    private ArrayList<Ship> playerShips;
+    private ArrayList<ShipParts> playerShips;
     // Como playerShips pero los barcos del tablero del oponente CPU.
-    private ArrayList<Ship> cpuShips;
+    private ArrayList<ShipParts> cpuShips;
     // La altura del tablero.
     private final int HEIGHT = 10;
     // La anchura del tablero.
     private final int WIDTH = 10;
-    // Representa una casilla vacía.
-    private static final String CHAR_WATER = "≈";
-    // Representa una casilla vacía atacada.
-    private static final String CHAR_WATER_ATTACKED = "X";
-    // Representa una casilla de barco.
-    private static final String CHAR_SHIP = "◊";
-    // Representa una casilla de barco atacada.
-    private static final String CHAR_SHIP_ATTACKED = "♦";
+//    // Representa una casilla vacía.
+//    private static final String CHAR_WATER = "≈";
+//    // Representa una casilla vacía atacada.
+//    private static final String CHAR_WATER_ATTACKED = "X";
+//    // Representa una casilla de barco.
+//    private static final String CHAR_SHIP = "◊";
+//    // Representa una casilla de barco atacada.
+//    private static final String CHAR_SHIP_ATTACKED = "♦";
 
-    public Grid() {
+    public Grid() throws Exception {
         this.grid = new ArrayList<>();
         this.fillGrid();
         this.showGrid();
@@ -57,17 +59,93 @@ public class Grid {
 
     // TEST: Método para comprobar salidas de rango
     public String getByIndexTest(int idx) {
-        return grid.get(idx).getCharacter();
+        return this.grid.get(idx).getCharacter();
     }
 
-    // Rellena el tablero con 'nada' para su presentación visual.
-    private void fillGrid() {
-        for (int y = 0; y < (this.HEIGHT * this.WIDTH); y++) {
-            Cell waterCell = new Cell(Grid.CHAR_WATER, Grid.CHAR_WATER_ATTACKED);
-            grid.add(waterCell);
+    // Rellena el tablero con CHAR_WATER para su presentación visual.
+    private void fillGridWithNothing() {
+        for (int index = 0; index < (this.HEIGHT * this.WIDTH); index++) {
+            this.grid.add(new WaterCell());
         }
     }
 
+    // Convierte un entero a un string según el código ascii
+    private String toStr(int code) {
+        return Character.toString((char) code);
+    }
+
+    // Comprueba si un caracter es barco o no según el formato de barcos
+    // 0 es agua. > 0 es barco. > 6 Error.
+    private boolean isShip(String string) throws WrongShipFileException {
+        int num;
+        try {
+            num = Integer.parseInt(string);
+            if (num >= 6) {
+                throw new WrongShipFileException();
+            } else if (num > 0) {
+                return true;
+            }
+            return false;
+        } catch (NumberFormatException err) {
+            throw new WrongShipFileException();
+        }
+    }
+
+    private boolean hasId(ArrayList<ShipParts> list, int id) {
+        for (ShipParts sp: list) {
+            if (sp.getId() == id) return true;
+        }
+        return false;
+    }
+
+    private int getShipPartsIndex(ArrayList<ShipParts> list, int id) {
+        int length = list.size();
+        for (int i = 0; i < length; i++) {
+            ShipParts sp = list.get(i);
+            if (sp.getId() == id) return i;
+        }
+        return -1;
+    }
+
+    // TODO:
+    private void fillGrid() throws Exception {
+        File file = new File(this.PATH);
+        try {
+            FileReader fr = new FileReader(file);
+            for (int index = 0; index < (this.HEIGHT * this.WIDTH); index++) {
+                String cell = toStr(fr.read());
+                // Si es un barco
+                if (isShip(cell)) {
+                    // Obtiene la id y crea una celda de barco con dicha iden la
+                    // posicion del grid actual.
+                    int shipId = Integer.parseInt(cell);
+                    this.grid.add(new ShipCell(shipId));
+
+                    // Y lo añade a la lista de las localizaciones de los
+                    // barcos.
+                    ShipParts shipParts;
+
+                    // Si no existe un grupo de barcos con el mismo id, lo crea.
+                    if (!hasId(this.playerShips, shipId)) {
+                        shipParts = new ShipParts(shipId);
+                    // Si existe, simplemente selecciona el ya existente
+                    } else {
+                        int idx = getShipPartsIndex(this.playerShips, shipId);
+                        shipParts = this.playerShips.get(idx);
+                    }
+                    // Y le añade la parte
+                    shipParts.add(index);
+                // Si es agua, simplemente añade una celda de agua.
+                } else {
+                    this.grid.add(new WaterCell());
+                }
+            }
+        } catch (IOException err) {
+            throw new WrongShipFileException();
+        }
+    }
+
+    // DEBUG
     // Muestra el contenido real del tablero en forma de cuadrado.
     private void showRealGrid() {
         for (int y = 0; y < this.HEIGHT; y++) {

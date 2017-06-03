@@ -17,16 +17,17 @@ public class ShipCell extends Cell {
     // Indica al barco al que pertenece.Varias celda tienen el mismo id para
     // relacionarlas entre si.
     private final int id;
+    // Representa una casilla de barco.
+    private static final String CHAR_SHIP = "◊";
+    // Representa una casilla de barco atacada.
+    private static final String CHAR_SHIP_ATTACKED = "♦";
 
     /**
-     * @param character Representará la celda del barco en el tablero.
-     * @param attackedCharacter Representará la celda del barco atacada en el
-     * tablero.
      * @param id Identificador de las partes del barco. Todas las partes de un
      * mismo barco tendrán la misma id.
      */
-    public ShipCell(String character, String attackedCharacter, int id) {
-        super(character, attackedCharacter);
+    public ShipCell(int id) {
+        super(CHAR_SHIP, CHAR_SHIP_ATTACKED);
         this.id = id;
     }
 
