@@ -26,4 +26,10 @@ public class Text {
     static final String MISSED = "Fallaste";
     static final String HIT = "Tocado!";
     static final String SANK = "Tocado y hundido!";
+
+    // Exceptions
+    public static final String ALREADY_ATTACKED_EX = "Error: Celda ya atacada.";
+    public static final String WRONG_SHIP_FILE_EX ="Error en el fichero de " +
+        "barcos. Por favor, lee la documentación para saber como rellenar " +
+        "correctamente dicho fichero.";
 }

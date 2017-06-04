@@ -5,13 +5,14 @@
  */
 package battleship.Exceptions;
 
+import battleship.Text;
+
 /**
  *
  * @author Nacho Verdón
  */
 public class WrongShipFileException extends Exception {
     public WrongShipFileException() {
-        super("Error en el fichero de barcos. Por favor, lee la documentación"
-              + " para saber como rellenar correctamente dicho fichero.");
+        super(Text.WRONG_SHIP_FILE_EX);
     }
 }

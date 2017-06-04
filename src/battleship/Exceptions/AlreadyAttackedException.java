@@ -6,12 +6,14 @@
 
 package battleship.Exceptions;
 
+import battleship.Text;
+
 /**
  *
  * @autor Nacho Verdón
  */
 public class AlreadyAttackedException extends Exception {
     public AlreadyAttackedException() {
-        super("Error: Celda ya atacada.");
+        super(Text.ALREADY_ATTACKED_EX);
     }
 }
