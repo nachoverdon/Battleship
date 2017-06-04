@@ -13,7 +13,7 @@ package battleship;
  * Estas celdas representaran las partes de los barcos. Tienen además una id que
  * las relaciona con las demás partes del mismo barco.
  */
-public class ShipCell extends Cell implements Id, ShipCharacters {
+public class ShipCell extends Cell implements Id {
     // Indica al barco al que pertenece.Varias celda tienen el mismo id para
     // relacionarlas entre si.
     private final int id;
@@ -24,7 +24,7 @@ public class ShipCell extends Cell implements Id, ShipCharacters {
      * mismo barco tendrán la misma id.
      */
     public ShipCell(int id) {
-        super(CHAR_SHIP, CHAR_SHIP_ATTACKED);
+        super(Text.CHAR_SHIP, Text.CHAR_SHIP_ATTACKED);
         this.id = id;
     }
 

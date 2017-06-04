@@ -10,9 +10,9 @@ package battleship;
  * @author Nacho Verdón
  * Estas celdas representaran el agua (casilla sin barco).
  */
-public class WaterCell extends Cell implements WaterCharacters {
+public class WaterCell extends Cell {
 
     public WaterCell() {
-        super(CHAR_WATER, CHAR_WATER_ATTACKED);
+        super(Text.CHAR_WATER, Text.CHAR_WATER_ATTACKED);
     }
 }

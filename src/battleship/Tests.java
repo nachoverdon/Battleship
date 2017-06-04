@@ -15,6 +15,7 @@ import java.io.IOException;
  */
 public class Tests {
     public static void main(String[] args) {
+        System.out.println(obtMayNum(new int[] {1, 3, 5, 90}));
         System.out.println("lol".substring(1, 2));
         System.out.println(Integer.parseInt("\n".trim()));
         ShipFileReader sfr = new ShipFileReader();
@@ -24,7 +25,7 @@ public class Tests {
             System.out.print("Tests.java - line 20 ");
             System.out.println(err.getMessage());
         }
-        
+
         File file = new File("src/ships.grid");
         try {
             System.out.println("");
@@ -39,6 +40,16 @@ public class Tests {
         } catch (IOException err) {
             System.out.println(err.getMessage());
         }
+    }
+
+    private static int obtMayNum(int list[]) {
+        int idx, max = Integer.MIN_VALUE;
+
+        for (idx = 0; idx < list.length; idx++) {
+            if (list[idx] > max) max = list[idx];
+        }
+
+        return max;
     }
 
     private static String chrToStr(int asciiCode) {
